@@ -17,7 +17,7 @@ function Header() {
         <Img src={Banner} alt="react-boilerplate - Logo" />
       </A>
       <div>
-      <CenteredSection>
+        <CenteredSection>
           <H2>
             <FormattedMessage {...messages.startAssignmentHeader} />
           </H2>

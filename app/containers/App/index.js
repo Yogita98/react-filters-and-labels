@@ -13,6 +13,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import Part1Page from 'containers/Part1Page/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -32,16 +33,16 @@ export default function App() {
   return (
     <AppWrapper>
       <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
+        titleTemplate="%s - Prodigal Assesment"
+        defaultTitle="Prodigal Assesment"
       >
         <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/features" component={FeaturePage} />
-        <Route path="" component={NotFoundPage} />
+        <Route path="/part1" component={Part1Page} />
+        <Route path="/part2" component={FeaturePage} />
       </Switch>
       {/* <Header /> */}
       {/* <Footer /> */}

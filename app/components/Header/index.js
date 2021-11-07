@@ -27,10 +27,10 @@ function Header() {
         </CenteredSection>
       </div>
       <NavBar>
-        <HeaderLink to="/">
+        <HeaderLink to="/part1">
           <FormattedMessage {...messages.part1} />
         </HeaderLink>
-        <HeaderLink to="/features">
+        <HeaderLink to="/part2">
           <FormattedMessage {...messages.part2} />
         </HeaderLink>
       </NavBar>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Form, Select, Slider, Button, Divider, Table } from 'antd';
-const { Option } = Select;
+import { Form, Select, Slider, Button, Table } from 'antd';
 import axios from 'axios';
+const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -37,10 +37,9 @@ export default function FormContainer() {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(res => {
-      return res.data.data.map((agent,i) => {return {...agent, key:i}});
-      
-    }).then(finalData => setFilteredData(finalData));
+    })
+      .then(res => res.data.data.map((agent, i) => ({ ...agent, key: i })))
+      .then(finalData => setFilteredData(finalData));
   };
 
   const [agentList, setAgentList] = useState([]);
@@ -51,20 +50,17 @@ export default function FormContainer() {
       .then(response => setAgentList(response.data.data.listofagents));
   }, []);
 
-  const getLabeledAgentData = () => {
-    return agentList.length
-      ? agentList.map(value => ({
-          value,
-          label: value,
-        }))
-      : [];
-  };
+  const getLabeledAgentData = agentList.length
+    ? agentList.map(value => ({
+        value,
+        label: value,
+      }))
+    : [];
 
   const columns = [
     {
       title: 'Agent',
       dataIndex: 'agent_id',
-      // render: (text) => <a>{text}</a>,
     },
     {
       title: 'Call Id',
@@ -75,21 +71,6 @@ export default function FormContainer() {
       dataIndex: 'call_time',
     },
   ];
-
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      );
-    },
-    getCheckboxProps: record => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
 
   return (
     <div>
@@ -113,9 +94,12 @@ export default function FormContainer() {
           ]}
         >
           <Select mode="multiple">
-            {getLabeledAgentData().map(agent => {
-              return <Option key={agent.value} value={agent.value}>{agent.label}</Option>;
-            })}
+            {/* {change the following snippet and add a loader component as well as handle 404 errors} */}
+            {getLabeledAgentData.map(agent => (
+              <Option key={agent.value} value={agent.value}>
+                {agent.label}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
 
@@ -133,18 +117,13 @@ export default function FormContainer() {
             offset: 10,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" size="large">
             Search
           </Button>
         </Form.Item>
       </Form>
-      {/* <Divider /> */}
       {filteredData.length && (
         <Table
-          // rowSelection={{
-          //   type: selectionType,
-          //   ...rowSelection,
-          // }}
           columns={columns}
           dataSource={filteredData}
         />

@@ -51,6 +51,7 @@ export default function FormContainer() {
   const [isFailureComponentVisible, setIsFailureComponentVisible] = useState(
     false,
   );
+  const [isCallListChanged, setIsCallListChange] = useState(false);
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -84,10 +85,10 @@ export default function FormContainer() {
         setLabelList(finalData);
       })
       .catch(() => setIsFailureComponentVisible(true));
-  });
+  }, [isCallListChanged]);
 
   const prepareFormData = (action, data) =>
-    action === 'create'
+    action === 'create' && data
       ? [
           {
             name: data,
@@ -118,8 +119,9 @@ export default function FormContainer() {
         label_ops: actionsArray,
       },
     };
+    console.log(formData);
     axiosHelper('post', applyLabels, formData)
-      .then(() => console.log('success'))
+      .then(res => setIsCallListChange(true))
       .catch(() => setIsFailureComponentVisible(true));
   };
   return (
@@ -167,8 +169,6 @@ export default function FormContainer() {
       </Form>
       {isFailureComponentVisible ? (
         <FailureComponent onClick={() => setIsFailureComponentVisible(false)} />
-      ) : !callList.length ? (
-        <LoadingIndicator />
       ) : (
         <Table
           rowSelection={{

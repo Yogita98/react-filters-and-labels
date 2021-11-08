@@ -38,7 +38,7 @@ export default function FormContainer() {
   const [agentList, setAgentList] = useState([]);
   const [isLoadingVisible, setIsLoadingVisible] = useState(false);
   const [isFailureComponentVisible, setIsFailureComponentVisible] = useState(
-    false,
+    false
   );
 
   useEffect(() => {

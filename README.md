@@ -16,7 +16,14 @@
 - [x] More than one label can be applied or removed at a time
 - [x] Calls in a list can be selected 'manually one-by-one' or through a 'select-all'
 
+### Misc
+
+- [x] Deploy on Netlify/Heroku
+- [x] Avoid using a state management library
+- [ ] 
+
 ## Pending Tasks
 
-- Build the app with Typescript
-- Work on improving component reuse
+- [ ] Build the app with Typescript
+- [ ] Work on improving component reuse
+- [ ] Look into heroku deployment issues

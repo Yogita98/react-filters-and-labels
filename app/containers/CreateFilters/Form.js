@@ -38,22 +38,22 @@ export default function FormContainer() {
   const [agentList, setAgentList] = useState([]);
   const [isLoadingVisible, setIsLoadingVisible] = useState(false);
   const [isFailureComponentVisible, setIsFailureComponentVisible] = useState(
-    false,
+    false
   );
 
   useEffect(() => {
     axiosHelper('get', getCallRange)
       .then(res => setDurationRange(res.data.data))
-      .catch(error => setIsFailureComponentVisible(true));
+      .catch(setIsFailureComponentVisible(true));
 
     axiosHelper('get', getAgentList)
       .then(response => setAgentList(response.data.data.listofagents))
-      .catch(error => setIsFailureComponentVisible(true));
+      .catch(setIsFailureComponentVisible(true));
   }, [isFailureComponentVisible]);
 
   const onFinish = values => {
     setIsLoadingVisible(true);
-    console.log('Received values of form: ', values);
+    // console.log('Received values of form: ', values);
     const formData = {
       info: {
         filter_agent_list: values.agentList,
@@ -61,9 +61,9 @@ export default function FormContainer() {
       },
     };
     axiosHelper('post', filterCalls, formData)
-      .then(res => res.data.map((agent, i) => ({ ...agent, key: i })))
+      .then(res => res.data.data.map((agent, i) => ({ ...agent, key: i })))
       .then(finalData => setFilteredData(finalData))
-      .catch(error => setIsFailureComponentVisible(true));
+      .catch(setIsFailureComponentVisible(true));
   };
 
   const getLabeledAgentData = agentList.length

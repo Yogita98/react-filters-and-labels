@@ -1,3 +1,10 @@
 export const RESTART_ON_REMOUNT = '@@saga-injector/restart-on-remount';
 export const DAEMON = '@@saga-injector/daemon';
 export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
+export const BASE_SERVER_URL = 'https://damp-garden-93707.herokuapp.com';
+export const getAgentList = '/getlistofagents';
+export const getCallRange = '/getdurationrange';
+export const filterCalls = '/getfilteredcalls';
+export const getCallList = '/getcalllist'
+export const getLabelList = '/getlistoflabels'
+export const applyLabels = '/applyLabels'

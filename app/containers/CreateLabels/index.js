@@ -17,7 +17,6 @@ export default function LabelsContainer() {
           content="Feature page of React.js Boilerplate application"
         />
       </Helmet>
-      <div>This is Part 2 of the assignment</div>
       <FormContainer />
     </div>
   );

@@ -17,7 +17,6 @@ export default function FiltersContainer() {
           content="Feature page of React.js Boilerplate application"
         />
       </Helmet>
-      <div>This is Part 1 of the assignment</div>
       <FormContainer />
     </div>
   );

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Form, Select, Slider, Button, Table } from 'antd';
-import axios from 'axios';
-const { Option } = Select;
+import { Form, Slider, Table } from 'antd';
+import axiosHelper from '../../utils/axios';
+import MultiSelectInput from '../../components/CustomComponents/MultiSelectInput';
+import FormButton from '../../components/CustomComponents/Button';
+import { getCallRange, getAgentList, filterCalls } from '../../utils/constants';
+import LoadingIndicator from 'components/LoadingIndicator';
+import FailureComponent from '../../components/CustomComponents/Failure';
 
 const formItemLayout = {
   labelCol: {
@@ -13,16 +17,42 @@ const formItemLayout = {
   },
 };
 
+const columns = [
+  {
+    title: 'Agent',
+    dataIndex: 'agent_id',
+  },
+  {
+    title: 'Call Id',
+    dataIndex: 'call_id',
+  },
+  {
+    title: 'Call Duration',
+    dataIndex: 'call_time',
+  },
+];
+
 export default function FormContainer() {
   const [durationRange, setDurationRange] = useState({});
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(null);
+  const [agentList, setAgentList] = useState([]);
+  const [isLoadingVisible, setIsLoadingVisible] = useState(false);
+  const [isFailureComponentVisible, setIsFailureComponentVisible] = useState(
+    false
+  );
 
   useEffect(() => {
-    axios
-      .get('https://damp-garden-93707.herokuapp.com/getdurationrange')
-      .then(res => setDurationRange(res.data.data));
-  }, []);
+    axiosHelper('get', getCallRange)
+      .then(res => setDurationRange(res.data.data))
+      .catch(error => setIsFailureComponentVisible(true));
+
+    axiosHelper('get', getAgentList)
+      .then(response => setAgentList(response.data.data.listofagents))
+      .catch(error => setIsFailureComponentVisible(true));
+  }, [isFailureComponentVisible]);
+
   const onFinish = values => {
+    setIsLoadingVisible(true);
     console.log('Received values of form: ', values);
     const formData = {
       info: {
@@ -30,47 +60,19 @@ export default function FormContainer() {
         filter_time_range: values.range,
       },
     };
-    axios({
-      method: 'post',
-      url: 'https://damp-garden-93707.herokuapp.com/getfilteredcalls',
-      data: formData,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => res.data.data.map((agent, i) => ({ ...agent, key: i })))
-      .then(finalData => setFilteredData(finalData));
+    axiosHelper('post', filterCalls, formData)
+      .then(res => res.data.map((agent, i) => ({ ...agent, key: i })))
+      .then(finalData => setFilteredData(finalData))
+      .catch(error => setIsFailureComponentVisible(true));
+
   };
 
-  const [agentList, setAgentList] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get('https://damp-garden-93707.herokuapp.com/getlistofagents')
-      .then(response => setAgentList(response.data.data.listofagents));
-  }, []);
-
   const getLabeledAgentData = agentList.length
-    ? agentList.map(value => ({
-        value,
+    ? agentList.map((value, i) => ({
+        key: i,
         label: value,
       }))
     : [];
-
-  const columns = [
-    {
-      title: 'Agent',
-      dataIndex: 'agent_id',
-    },
-    {
-      title: 'Call Id',
-      dataIndex: 'call_id',
-    },
-    {
-      title: 'Call Duration',
-      dataIndex: 'call_time',
-    },
-  ];
 
   return (
     <div>
@@ -82,26 +84,14 @@ export default function FormContainer() {
           range: [15, 50],
         }}
       >
-        <Form.Item
+        <MultiSelectInput
+          key={agentList}
           name="agentList"
           label="Agent Name"
-          rules={[
-            {
-              required: true,
-              message: 'Please select atleast one agent',
-              type: 'array',
-            },
-          ]}
-        >
-          <Select mode="multiple">
-            {/* {change the following snippet and add a loader component as well as handle 404 errors} */}
-            {getLabeledAgentData.map(agent => (
-              <Option key={agent.value} value={agent.value}>
-                {agent.label}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+          tag="agent"
+          isRequired={true}
+          data={getLabeledAgentData}
+        />
 
         <Form.Item name="range" label="Call Duration">
           <Slider
@@ -110,23 +100,18 @@ export default function FormContainer() {
             min={durationRange.minimum}
           />
         </Form.Item>
-
-        <Form.Item
-          wrapperCol={{
-            span: 12,
-            offset: 10,
-          }}
-        >
-          <Button type="primary" htmlType="submit" size="large">
-            Search
-          </Button>
-        </Form.Item>
+        <FormButton name="Search" />
       </Form>
-      {filteredData.length && (
-        <Table
-          columns={columns}
-          dataSource={filteredData}
-        />
+      {isFailureComponentVisible ? (
+        <FailureComponent onClick={() => setIsFailureComponentVisible(false)} />
+      ) : isLoadingVisible ? (
+        !filteredData ? (
+          <LoadingIndicator />
+        ) : (
+          <Table columns={columns} dataSource={filteredData} />
+        )
+      ) : (
+        ''
       )}
     </div>
   );

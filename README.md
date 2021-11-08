@@ -20,7 +20,6 @@
 
 - [x] Deploy on Netlify/Heroku
 - [x] Avoid using a state management library
-- [ ] 
 
 ## Pending Tasks
 

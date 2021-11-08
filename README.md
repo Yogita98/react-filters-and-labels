@@ -26,3 +26,6 @@
 - [ ] Build the app with Typescript
 - [ ] Work on improving component reuse
 - [ ] Look into heroku deployment issues
+
+Heroku link: https://prodigal-assesment.herokuapp.com/  
+Netlify link: https://react-filters-and-labels.netlify.app/

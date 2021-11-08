@@ -49,7 +49,7 @@ export default function FormContainer() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [isAlertMessageVisible, setIsAlertMessageVisible] = useState(false);
   const [isFailureComponentVisible, setIsFailureComponentVisible] = useState(
-    false
+    false,
   );
 
   const rowSelection = {
@@ -68,7 +68,7 @@ export default function FormContainer() {
           call_id: call.call_id,
           label: call.label_id,
           key: i,
-        }))
+        })),
       )
       .then(finalData => setCallList(finalData))
       .catch(error => setIsFailureComponentVisible(true));
@@ -78,7 +78,7 @@ export default function FormContainer() {
         res.data.data.unique_label_list.map((label, i) => ({
           label,
           key: i,
-        }))
+        })),
       )
       .then(finalData => {
         setLabelList(finalData);
@@ -95,12 +95,10 @@ export default function FormContainer() {
           },
         ]
       : data
-      ? data.map(item => {
-          return {
-            name: item,
-            op: action,
-          };
-        })
+      ? data.map(item => ({
+          name: item,
+          op: action,
+        }))
       : [];
 
   const onFinish = actions => {

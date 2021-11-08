@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Form, Slider, Table } from 'antd';
+import LoadingIndicator from 'components/LoadingIndicator';
 import axiosHelper from '../../utils/axios';
 import MultiSelectInput from '../../components/CustomComponents/MultiSelectInput';
 import FormButton from '../../components/CustomComponents/Button';
 import { getCallRange, getAgentList, filterCalls } from '../../utils/constants';
-import LoadingIndicator from 'components/LoadingIndicator';
 import FailureComponent from '../../components/CustomComponents/Failure';
 
 const formItemLayout = {
@@ -38,7 +38,7 @@ export default function FormContainer() {
   const [agentList, setAgentList] = useState([]);
   const [isLoadingVisible, setIsLoadingVisible] = useState(false);
   const [isFailureComponentVisible, setIsFailureComponentVisible] = useState(
-    false
+    false,
   );
 
   useEffect(() => {
@@ -64,7 +64,6 @@ export default function FormContainer() {
       .then(res => res.data.map((agent, i) => ({ ...agent, key: i })))
       .then(finalData => setFilteredData(finalData))
       .catch(error => setIsFailureComponentVisible(true));
-
   };
 
   const getLabeledAgentData = agentList.length
@@ -89,7 +88,7 @@ export default function FormContainer() {
           name="agentList"
           label="Agent Name"
           tag="agent"
-          isRequired={true}
+          isRequired
           data={getLabeledAgentData}
         />
 

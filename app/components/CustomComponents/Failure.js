@@ -8,7 +8,11 @@ export default function FailureComponent(props) {
       status="500"
       title="500"
       subTitle="Sorry, something wrong while fetching the page!"
-      extra={<Button onClick={props.onClick} type="primary">Retry</Button>}
+      extra={
+        <Button onClick={props.onClick} type="primary">
+          Retry
+        </Button>
+      }
     />
   );
 }

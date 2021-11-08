@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select } from 'antd';
-const { Option } = Select;
 import FormInput from './FormItem';
+const { Option } = Select;
 
 export default function MultiSelectInput({
   name,

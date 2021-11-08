@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { BASE_SERVER_URL } from './constants'
+import { BASE_SERVER_URL } from './constants';
 
-export default function axiosHelper(method, url, data = '', handleError) {
+export default function axiosHelper(method, url, data = '') {
   return axios({
-    method: method,
+    method,
     url: BASE_SERVER_URL + url,
-    data: data,
+    data,
     headers: {
       user_id: '24b456',
     },
-  }).catch(error => handleError);
+  });
 }

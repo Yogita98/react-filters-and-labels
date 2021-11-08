@@ -38,17 +38,17 @@ export default function FormContainer() {
   const [agentList, setAgentList] = useState([]);
   const [isLoadingVisible, setIsLoadingVisible] = useState(false);
   const [isFailureComponentVisible, setIsFailureComponentVisible] = useState(
-    false
+    false,
   );
 
   useEffect(() => {
     axiosHelper('get', getCallRange)
       .then(res => setDurationRange(res.data.data))
-      .catch(setIsFailureComponentVisible(true));
+      .catch(() => setIsFailureComponentVisible(true));
 
     axiosHelper('get', getAgentList)
       .then(response => setAgentList(response.data.data.listofagents))
-      .catch(setIsFailureComponentVisible(true));
+      .catch(() => setIsFailureComponentVisible(true));
   }, [isFailureComponentVisible]);
 
   const onFinish = values => {
@@ -63,7 +63,7 @@ export default function FormContainer() {
     axiosHelper('post', filterCalls, formData)
       .then(res => res.data.data.map((agent, i) => ({ ...agent, key: i })))
       .then(finalData => setFilteredData(finalData))
-      .catch(setIsFailureComponentVisible(true));
+      .catch(() => setIsFailureComponentVisible(true));
   };
 
   const getLabeledAgentData = agentList.length

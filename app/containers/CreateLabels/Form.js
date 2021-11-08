@@ -71,7 +71,7 @@ export default function FormContainer() {
         })),
       )
       .then(finalData => setCallList(finalData))
-      .catch(error => setIsFailureComponentVisible(true));
+      .catch(() => setIsFailureComponentVisible(true));
 
     axiosHelper('get', getLabelList)
       .then(res =>
@@ -83,7 +83,7 @@ export default function FormContainer() {
       .then(finalData => {
         setLabelList(finalData);
       })
-      .catch(error => setIsFailureComponentVisible(true));
+      .catch(() => setIsFailureComponentVisible(true));
   });
 
   const prepareFormData = (action, data) =>
@@ -119,8 +119,8 @@ export default function FormContainer() {
       },
     };
     axiosHelper('post', applyLabels, formData)
-      .then(res => console.log('success'))
-      .catch(error => setIsFailureComponentVisible(true));
+      .then(() => console.log('success'))
+      .catch(() => setIsFailureComponentVisible(true));
   };
   return (
     <div>

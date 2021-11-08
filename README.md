@@ -1,6 +1,6 @@
 # react-filters-and-labels
 
-## Tasks Completing
+## Tasks Completed
 
 ### Part 1 - Filters on 5000 call data-set
 
